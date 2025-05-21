@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Cámara</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .video-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Prueba de Acceso a la Cámara</h1>
+    <p>Esta página verifica si tu navegador puede acceder correctamente a la cámara web.</p>
+    
+    <button id="startButton">Iniciar Cámara</button>
+    
+    <div class="video-container">
+        <video id="webcam" autoplay playsinline width="640" height="480"></video>
+    </div>
+    
+    <div id="status"></div>
+    
+    <script>
+        const startButton = document.getElementById('startButton');
+        const webcamElement = document.getElementById('webcam');
+        const statusElement = document.getElementById('status');
+        
+        startButton.addEventListener('click', startCamera);
+        
+        function startCamera() {
+            statusElement.innerHTML = 'Solicitando acceso a la cámara...';
+            statusElement.className = '';
+            
+            // Opciones para solicitar solo video, no audio
+            const constraints = {
+                video: true,
+                audio: false
+            };
+            
+            // Compatibilidad con navegadores antiguos
+            if (navigator.mediaDevices === undefined) {
+                navigator.mediaDevices = {};
+            }
+            
+            // Verificar si getUserMedia está disponible
+            if (navigator.mediaDevices.getUserMedia === undefined) {
+                navigator.mediaDevices.getUserMedia = function(constraints) {
+                    const getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                    
+                    if (!getUserMedia) {
+                        return Promise.reject(new Error('getUserMedia no está implementado en este navegador'));
+                    }
+                    
+                    return new Promise(function(resolve, reject) {
+                        getUserMedia.call(navigator, constraints, resolve, reject);
+                    });
+                };
+            }
+            
+            // Solicitar acceso a la cámara
+            console.log('Solicitando getUserMedia con:', constraints);
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(function(stream) {
+                    console.log('Acceso a la cámara concedido:', stream);
+                    webcamElement.srcObject = stream;
+                    statusElement.innerHTML = '✓ Cámara iniciada correctamente. Si no ves video, verifica que tu cámara esté conectada y funcionando.';
+                    statusElement.className = 'success';
+                })
+                .catch(function(error) {
+                    console.error('Error al acceder a la cámara:', error);
+                    statusElement.innerHTML = '✕ Error al acceder a la cámara: ' + error.message + 
+                        '<br><br>Posibles soluciones:' +
+                        '<li>Asegúrate de que tu cámara esté conectada y funcionando</li>' +
+                        '<li>Verifica que no haya otra aplicación usando la cámara</li>' +
+                        '<li>Revisa la configuración de permisos del navegador</li>' +
+                        '<li>Prueba con otro navegador (Chrome recomendado)</li>';
+                    statusElement.className = 'error';
+                });
+        }
+    </script>
+</body>
+</html>

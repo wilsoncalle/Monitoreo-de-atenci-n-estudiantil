@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Inteligente de Monitoreo de Atención Estudiantil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <!-- Header fijo estilo Apple -->
+    <header class="app-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="app-logo"><i class="bi bi-eye"></i> Focus Monitor</a>
+                <div class="header-actions">
+                    <button id="manageStudentsBtn" class="btn btn-outline-secondary btn-sm me-2">
+                        <i class="bi bi-people"></i> Gestionar Estudiantes
+                    </button>
+                    <button id="configBtn" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#configModal">
+                        <i class="bi bi-gear"></i> Configuración
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="container main-content">
+        <!-- Página de selección de estudiante -->
+        <div id="studentSelectionPage" class="page student-selection active">
+            <div class="text-center mb-4">
+                <h1>Selecciona un Estudiante</h1>
+                <p class="text-muted">Para comenzar el monitoreo, selecciona un estudiante de la lista o crea uno nuevo.</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div id="studentList" class="mb-4">
+                        <!-- Las tarjetas de estudiantes se añadirán dinámicamente -->
+                    </div>
+                    
+                    <div class="text-center">
+                        <button id="addNewStudentBtn" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Añadir Nuevo Estudiante
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Página de gestión de estudiantes -->
+        <div id="studentManagementPage" class="page student-management">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Gestión de Estudiantes</h1>
+                <button id="backToSelectionBtn" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </button>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Añadir/Editar Estudiante</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="studentForm" class="student-form">
+                                <input type="hidden" id="studentId" value="">
+                                <div class="mb-3">
+                                    <label for="studentName" class="form-label">Nombre del Estudiante</label>
+                                    <input type="text" class="form-control" id="studentNameInput" placeholder="Nombre completo" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="studentEmail" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="studentEmail" placeholder="email@ejemplo.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tutorPhone" class="form-label">Teléfono del Tutor (WhatsApp)</label>
+                                    <input type="tel" class="form-control" id="tutorPhoneInput" placeholder="Ej: 5491123456789">
+                                    <div class="form-text">Formato internacional sin el signo +</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="studentNotes" class="form-label">Notas</label>
+                                    <textarea class="form-control" id="studentNotes" rows="2"></textarea>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">Guardar Estudiante</button>
+                                    <button type="button" id="clearFormBtn" class="btn btn-outline-secondary">Limpiar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-7">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Lista de Estudiantes</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="studentTableContainer" class="student-list">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Contacto</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="studentTableBody">
+                                        <!-- Las filas se añadirán dinámicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Página de monitoreo (dashboard) -->
+        <div id="dashboardPage" class="page dashboard-content">
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 id="currentStudentName" class="h3 mb-1">Estudiante</h1>
+                    <p class="text-muted mb-0">Monitoreo en tiempo real</p>
+                </div>
+                <button id="changeStudentBtn" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left-right"></i> Cambiar Estudiante
+                </button>
+            </div>
+            
+            <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h2>Vista en Tiempo Real</h2>
+                        <div>
+                            <button id="activateCameraBtn" class="btn btn-primary btn-sm">
+                                <i class="bi bi-camera-video"></i> Activar Cámara
+                            </button>
+                            <span id="monitoring-status" class="badge rounded-pill ms-2" style="display: none;"></span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="webcam-container">
+                            <div id="webcam-wrapper">
+                                <video id="webcam" autoplay playsinline muted></video>
+                                <canvas id="canvas" class="d-none"></canvas>
+                                <!-- Indicador de carga eliminado -->
+                            </div>
+                            <div id="status-indicator" class="mt-3">
+                                <div class="alert alert-info">Esperando inicialización de cámara</div>
+                            </div>
+                            <!-- Botón de activar cámara movido al encabezado -->
+                        </div>
+                        <div class="mt-3 d-flex justify-content-center gap-3">
+                            <button id="startBtn" class="btn btn-success">
+                                <i class="bi bi-play-circle-fill me-1"></i> Iniciar Monitoreo
+                            </button>
+                            <button id="stopBtn" class="btn btn-danger" disabled>
+                                <i class="bi bi-stop-circle-fill me-1"></i> Detener Monitoreo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Métricas de sesión -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h2>Métricas de Sesión</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3 metrics-dashboard">
+                            <div class="col-md-4">
+                                <div class="p-3 rounded text-center" style="background-color: rgba(52, 199, 89, 0.1);">
+                                    <h4 class="h5 mb-3">Tiempo Atento</h4>
+                                    <p id="attention-time" class="h3 mb-0">00:00</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded text-center" style="background-color: rgba(255, 159, 10, 0.1);">
+                                    <h4 class="h5 mb-3">Tiempo con Celular</h4>
+                                    <p id="phone-time" class="h3 mb-0">00:00</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded text-center" style="background-color: rgba(255, 59, 48, 0.1);">
+                                    <h4 class="h5 mb-3">Tiempo Distraído</h4>
+                                    <p id="distracted-time" class="h3 mb-0">00:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-12">
+                <!-- Estado actual -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h3>Estado Actual</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="label-container" class="mb-3">
+                            <div class="status-item">
+                                <div class="mb-2">
+                                    <span>Atento: </span>
+                                    <span id="atento-prob">0%</span>
+                                </div>
+                                <div class="progress">
+                                    <div id="atento-bar" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="mb-2">
+                                    <span>Usando Celular: </span>
+                                    <span id="celular-prob">0%</span>
+                                </div>
+                                <div class="progress">
+                                    <div id="celular-bar" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="mb-2">
+                                    <span>Dormido/Distraído: </span>
+                                    <span id="dormido-prob">0%</span>
+                                </div>
+                                <div class="progress">
+                                    <div id="dormido-bar" class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="current-status">
+                            <h4 class="text-center mb-2">Estado detectado:</h4>
+                            <div id="current-status" class="alert alert-secondary text-center">No detectado</div>
+                        </div>
+                        <div class="whatsapp-alert mt-3">
+                            <button id="alertBtn" class="btn btn-success w-100" disabled>
+                                <i class="bi bi-whatsapp me-1"></i> Enviar Alerta por WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Registro de eventos -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Historial de Eventos</h3>
+                        <button id="clearEventsBtn" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                    <div class="card-body p-2">
+                        <div id="event-log" class="event-log">
+                            <!-- Los eventos se agregarán aquí dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div> <!-- Fin de row -->
+    </div> <!-- Fin de dashboardPage -->
+    </main>
+
+    <!-- Modales -->
+    <!-- Modal de configuración del sistema -->
+    <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="configModalLabel">
+                        <i class="bi bi-gear"></i> Configuración del Sistema
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="configForm">
+                        <div class="mb-3">
+                            <label for="detectionThreshold" class="form-label">
+                                Sensibilidad de Detección
+                                <span id="thresholdValue" class="badge bg-primary ms-2">0.7</span>
+                            </label>
+                            <input type="range" class="form-range" min="0.1" max="1.0" step="0.05" id="detectionThreshold" value="0.7">
+                            <div class="form-text">Un valor más alto reduce falsos positivos pero puede perder algunas detecciones.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="detectionInterval" class="form-label">Intervalo de Detección (ms)</label>
+                            <select class="form-select" id="detectionInterval">
+                                <option value="500">Rápido (500ms)</option>
+                                <option value="1000" selected>Normal (1000ms)</option>
+                                <option value="2000">Lento (2000ms)</option>
+                            </select>
+                            <div class="form-text">Intervalo entre cada detección. Un intervalo más lento consume menos recursos.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="stateChangeThreshold" class="form-label">Confirmación de cambio de estado</label>
+                            <select class="form-select" id="stateChangeThreshold">
+                                <option value="1">Inmediato (1 detección)</option>
+                                <option value="3" selected>Normal (3 detecciones)</option>
+                                <option value="5">Conservador (5 detecciones)</option>
+                            </select>
+                            <div class="form-text">Cuántas detecciones consecutivas se necesitan para confirmar un cambio de estado.</div>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="enableSoundAlerts" checked>
+                            <label class="form-check-label" for="enableSoundAlerts">Alertas sonoras</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="enableDatabaseLogging" checked>
+                            <label class="form-check-label" for="enableDatabaseLogging">Registro en base de datos</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="saveConfigBtn">
+                        <i class="bi bi-save"></i> Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de eliminación -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar a este estudiante?</p>
+                    <p class="text-danger small">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/students.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

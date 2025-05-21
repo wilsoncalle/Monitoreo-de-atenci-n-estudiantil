@@ -1,0 +1,518 @@
+/* Apple-inspired design for Student Attention Monitoring System */
+
+:root {
+    --apple-bg: #ffffff;
+    --apple-text: #1d1d1f;
+    --apple-accent: #0071e3;
+    --apple-accent-hover: #0077ed;
+    --apple-light-gray: #f5f5f7;
+    --apple-medium-gray: #86868b;
+    --apple-border: #d2d2d7;
+    --apple-success: #34c759;
+    --apple-warning: #ff9f0a;
+    --apple-danger: #ff3b30;
+    --apple-shadow: rgba(0, 0, 0, 0.1);
+    --apple-radius: 12px;
+    --apple-radius-sm: 8px;
+    --header-height: 60px;
+}
+
+/* Base Styles */
+body {
+    background-color: var(--apple-bg);
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: var(--apple-text);
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 1200px;
+    padding: 0 24px;
+}
+
+/* Header */
+.app-header {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--apple-border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.app-logo {
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--apple-text);
+    text-decoration: none;
+}
+
+.main-content {
+    margin-top: calc(var(--header-height) + 24px);
+    padding-bottom: 50px;
+}
+
+/* Cards & Panels */
+.card {
+    background: var(--apple-bg);
+    border-radius: var(--apple-radius);
+    border: none;
+    box-shadow: 0 4px 20px var(--apple-shadow);
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--apple-border);
+    background: var(--apple-bg);
+}
+
+.card-header h2, .card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--apple-text);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Webcam Styles */
+.webcam-container {
+    position: relative;
+    margin: 0 auto;
+    border-radius: var(--apple-radius);
+    overflow: hidden;
+}
+
+/* Estilo para cámara desactivada */
+.camera-inactive #webcam-wrapper {
+    filter: grayscale(100%) brightness(0.5);
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: filter 0.5s ease, background-color 0.5s ease;
+}
+
+#webcam-wrapper {
+    position: relative;
+    margin: 0 auto;
+    border-radius: var(--apple-radius);
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+#webcam {
+    width: 100%;
+    background-color: #86868b;
+    height: auto;
+    transform: scaleX(-1); /* Mirror the webcam */
+    display: block;
+    border-radius: var(--apple-radius);
+    transition: filter 0.5s ease;
+}
+
+.camera-inactive #webcam {
+    filter: grayscale(100%) brightness(0.4);
+}
+
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--apple-radius);
+}
+
+/* Status Indicators */
+.status-indicator {
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: var(--apple-radius-sm);
+    background: var(--apple-light-gray);
+    text-align: center;
+}
+
+.status-item {
+    display: block;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.status-item span {
+    font-weight: 500;
+    color: var(--apple-text);
+    display: block;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.status-item .progress {
+    width: 100%;
+    height: 20px;
+    background-color: var(--apple-light-gray);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.status-item .progress-bar {
+    border-radius: 8px;
+    transition: width 0.3s ease;
+    height: 100%;
+}
+
+.progress-bar.bg-success {
+    background-color: var(--apple-success) !important;
+}
+
+.progress-bar.bg-warning {
+    background-color: var(--apple-warning) !important;
+}
+
+.progress-bar.bg-danger {
+    background-color: var(--apple-danger) !important;
+}
+
+/* Events Log */
+.event-log {
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: var(--apple-radius-sm);
+    padding: 4px;
+    background-color: var(--apple-light-gray);
+    margin-top: 8px;
+    /* Scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: var(--apple-medium-gray) var(--apple-light-gray);
+}
+
+.event-log::-webkit-scrollbar {
+    width: 6px;
+}
+
+.event-log::-webkit-scrollbar-track {
+    background: var(--apple-light-gray);
+}
+
+.event-log::-webkit-scrollbar-thumb {
+    background-color: var(--apple-medium-gray);
+    border-radius: 3px;
+}
+
+.event-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: var(--apple-radius-sm);
+    font-size: 0.9rem;
+    background: var(--apple-bg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.event-item:hover {
+    transform: translateY(-2px);
+}
+
+.event-atento {
+    border-left: 3px solid var(--apple-success);
+}
+
+.event-celular {
+    border-left: 3px solid var(--apple-warning);
+}
+
+.event-dormido {
+    border-left: 3px solid var(--apple-danger);
+}
+
+/* Status Alerts */
+.current-status {
+    /*padding: 16px;*/
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: var(--apple-radius-sm);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+#current-status {
+    font-weight: 500;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 20px;
+    margin: 0;
+}
+
+.status-atento {
+    background-color: rgba(52, 199, 89, 0.1);
+    color: var(--apple-success);
+}
+
+.status-celular {
+    background-color: rgba(255, 159, 10, 0.1);
+    color: var(--apple-warning);
+}
+
+.status-dormido {
+    background-color: rgba(255, 59, 48, 0.1);
+    color: var(--apple-danger);
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--apple-accent);
+    color: white;
+}
+
+.btn-primary:hover, 
+.btn-primary:focus {
+    background-color: var(--apple-accent-hover);
+    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
+}
+
+.btn-success {
+    background-color: var(--apple-success);
+    color: white;
+}
+
+.btn-success:hover, 
+.btn-success:focus {
+    background-color: #2db84d;
+    box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.2);
+}
+
+.btn-danger {
+    background-color: var(--apple-danger);
+    color: white;
+}
+
+.btn-danger:hover, 
+.btn-danger:focus {
+    background-color: #e0352b;
+    box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.2);
+}
+
+.btn-outline-secondary {
+    background: transparent;
+    border: 1px solid var(--apple-border);
+    color: var(--apple-text);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--apple-light-gray);
+    color: var(--apple-text);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Alerts */
+.alert {
+    border-radius: var(--apple-radius-sm);
+    border: none;
+    padding: 14px;
+}
+
+.alert-info {
+    background-color: rgba(0, 113, 227, 0.1);
+    color: var(--apple-accent);
+}
+
+.alert-success {
+    background-color: rgba(52, 199, 89, 0.1);
+    color: var(--apple-success);
+}
+
+.alert-warning {
+    background-color: rgba(255, 159, 10, 0.1);
+    color: var(--apple-warning);
+}
+
+.alert-danger {
+    background-color: rgba(255, 59, 48, 0.1);
+    color: var(--apple-danger);
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: var(--apple-radius);
+    border: none;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--apple-border);
+    padding: 16px 20px;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--apple-border);
+    padding: 16px 20px;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    border-radius: var(--apple-radius-sm);
+    border: 1px solid var(--apple-border);
+    padding: 12px 16px;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--apple-accent);
+    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--apple-text);
+}
+
+.form-text {
+    color: var(--apple-medium-gray);
+}
+
+/* Student Selection & Management */
+.student-selection {
+    display: none; /* Hidden by default, shown in student selection mode */
+    min-height: 60vh;
+}
+
+.student-card {
+    cursor: pointer;
+    border-radius: var(--apple-radius-sm);
+    padding: 16px;
+    margin-bottom: 12px;
+    background: var(--apple-light-gray);
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.student-card:hover {
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.student-card.selected {
+    border-color: var(--apple-accent);
+    background: white;
+}
+
+.student-card .student-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.student-card .student-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--apple-accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+    margin-right: 16px;
+}
+
+.student-management {
+    display: none; /* Hidden by default, shown in management mode */
+}
+
+.student-form {
+    background: var(--apple-light-gray);
+    border-radius: var(--apple-radius);
+    padding: 24px;
+}
+
+.student-list {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Page Transitions */
+.page {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.page.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Dashboard Page */
+.dashboard-content {
+    display: none; /* Hidden by default, shown after student selection */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .container {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .status-item span {
+        min-width: 120px;
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    .header-content {
+        padding: 0 16px;
+    }
+    
+    .app-logo {
+        font-size: 18px;
+    }
+}

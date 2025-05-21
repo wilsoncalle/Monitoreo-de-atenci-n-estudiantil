@@ -1,0 +1,32 @@
+[2025-05-21 00:23:58] Datos recibidos: {"post_data":{"id":"max2zm3pt2mw9f9ague","name":"Wilson Calle","email":null,"tutorPhone":"+51953671053","notes":null,"createdAt":"2025-05-20T22:23:58.117Z","updatedAt":"2025-05-20T22:23:58.117Z"},"extracted_data":{"student_id":"max2zm3pt2mw9f9ague","name":"Wilson Calle","email":null,"tutor_phone":"+51953671053","notes":null}}
+[2025-05-21 00:47:45] Datos recibidos: {"post_data":{"id":"max3u7b1sefhg6htvsd","name":"Wilson Calle","email":null,"tutorPhone":"+51953671053","notes":null,"createdAt":"2025-05-20T22:47:45.277Z","updatedAt":"2025-05-20T22:47:45.277Z"},"extracted_data":{"student_id":"max3u7b1sefhg6htvsd","name":"Wilson Calle","email":null,"tutor_phone":"+51953671053","notes":null}}
+[2025-05-21 00:47:58] Datos recibidos: {"post_data":{"id":"max3uhadr0yuvvpbr1d","name":"Wilson Calle","email":null,"tutorPhone":"+51953671053","notes":null,"createdAt":"2025-05-20T22:47:58.213Z","updatedAt":"2025-05-20T22:47:58.213Z"},"extracted_data":{"student_id":"max3uhadr0yuvvpbr1d","name":"Wilson Calle","email":null,"tutor_phone":"+51953671053","notes":null}}
+[2025-05-21 00:49:13] Datos recibidos: {"post_data":{"id":"max3w3ajczzgu4mlvuf","name":"Wilson Calle","email":null,"tutorPhone":"+51953671053","notes":null,"createdAt":"2025-05-20T22:49:13.387Z","updatedAt":"2025-05-20T22:49:13.387Z"},"extracted_data":{"student_id":"max3w3ajczzgu4mlvuf","name":"Wilson Calle","email":null,"tutor_phone":"+51953671053","notes":null}}
+[2025-05-21 00:49:13] Iniciando operación de actualización para estudiante con ID: max3w3ajczzgu4mlvuf
+[2025-05-21 00:49:13] Consulta de actualización: 
+            UPDATE students 
+            SET name = :name, 
+                email = :email, 
+                tutor_phone = :tutor_phone, 
+                notes = :notes,
+                updated_at = NOW()
+            WHERE id = :student_id
+        
+[2025-05-21 00:49:13] Parámetros para la consulta: {"student_id":"max3w3ajczzgu4mlvuf","name":"Wilson Calle","email":null,"tutor_phone":"+51953671053","notes":null}
+[2025-05-21 00:49:13] Consulta ejecutada con éxito para estudiante ID: max3w3ajczzgu4mlvuf
+[2025-05-21 00:50:46] Datos recibidos: {"post_data":{"id":"max3y2wz98f0vm8lvv5","name":"Wilson Calle","email":null,"tutorPhone":"+51953671053","notes":null,"createdAt":"2025-05-20T22:50:46.211Z","updatedAt":"2025-05-20T22:50:46.211Z"},"extracted_data":{"student_id":"max3y2wz98f0vm8lvv5","name":"Wilson Calle","email":null,"tutor_phone":"+51953671053","notes":null}}
+[2025-05-21 00:50:46] Iniciando operación de inserción para estudiante con ID: max3y2wz98f0vm8lvv5 (existe en BD: NO)
+[2025-05-21 00:50:46] Consulta de inserción: 
+            INSERT INTO students (id, name, email, tutor_phone, notes, created_at, updated_at)
+            VALUES (:student_id, :name, :email, :tutor_phone, :notes, NOW(), NOW())
+        
+[2025-05-21 00:50:46] Parámetros para la consulta: {"student_id":"max3y2wz98f0vm8lvv5","name":"Wilson Calle","email":null,"tutor_phone":"+51953671053","notes":null}
+[2025-05-21 00:50:46] Consulta ejecutada con éxito para estudiante ID: max3y2wz98f0vm8lvv5
+[2025-05-21 01:18:07] Datos recibidos: {"post_data":{"id":"max4x7kwkhdgbw3dgmm","name":"renzo farf\u00e1n","email":"renzo30@gmail.com","tutorPhone":"921431540","notes":"hola, estimado el estudiante intranquilo","createdAt":"2025-05-20T23:18:05.216Z","updatedAt":"2025-05-20T23:18:05.216Z"},"extracted_data":{"student_id":"max4x7kwkhdgbw3dgmm","name":"renzo farf\u00e1n","email":"renzo30@gmail.com","tutor_phone":"921431540","notes":"hola, estimado el estudiante intranquilo"}}
+[2025-05-21 01:18:07] Iniciando operación de inserción para estudiante con ID: max4x7kwkhdgbw3dgmm (existe en BD: NO)
+[2025-05-21 01:18:07] Consulta de inserción: 
+            INSERT INTO students (id, name, email, tutor_phone, notes, created_at, updated_at)
+            VALUES (:student_id, :name, :email, :tutor_phone, :notes, NOW(), NOW())
+        
+[2025-05-21 01:18:07] Parámetros para la consulta: {"student_id":"max4x7kwkhdgbw3dgmm","name":"renzo farf\u00e1n","email":"renzo30@gmail.com","tutor_phone":"921431540","notes":"hola, estimado el estudiante intranquilo"}
+[2025-05-21 01:18:07] Consulta ejecutada con éxito para estudiante ID: max4x7kwkhdgbw3dgmm
